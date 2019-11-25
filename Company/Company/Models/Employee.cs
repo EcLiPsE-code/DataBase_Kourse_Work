@@ -12,7 +12,9 @@ namespace CompanyASP.Models
         public decimal Salary { get; set; }
         public decimal Profit { get; set; }
         public int Age { get; set; }
-        
+        public int UnitId { get; set; }
+        public Unit Unit { get; set; }
+
         public ICollection<EmployeeFact> EmployeeFacts { get; set; }
         public ICollection<ProgressEmployee> ProgressEmployees { get; set; }
         public Employee()

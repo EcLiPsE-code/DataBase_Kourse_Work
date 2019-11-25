@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using CompanyASP.Middleware;
 
 namespace Company
 {
@@ -27,6 +28,8 @@ namespace Company
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<CompanyContext>(options => options.UseSqlServer(connection));
+            services.AddDistributedMemoryCache();
+            services.AddSession();
             services.AddMvc();
         }
 
@@ -43,7 +46,9 @@ namespace Company
             }
 
             app.UseStaticFiles();
+            app.UseSession();
             app.UseCookiePolicy();
+            app.UseDbInitializer();
 
             app.UseMvc(routes =>
             {
