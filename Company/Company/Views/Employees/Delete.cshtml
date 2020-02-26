@@ -5,48 +5,47 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Delete</h2>
+<h2>Удалить</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Вы действительно хотите удлаить этого сотрудника?</h3>
 <div>
-    <h4>Employee</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.FullName)
+            <label>ФИО сотрудника</label>
         </dt>
         <dd>
             @Html.DisplayFor(model => model.FullName)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Salary)
+            <label>Зарплата</label>
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Salary)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Profit)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Profit)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Age)
+            <label>Возраст</label>
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Age)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Unit)
+            <label>Рейтинг</label>
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Unit.UnitID)
+            @Html.DisplayFor(model => model.Raiting)
+        </dd>
+        <dt>
+            <label>Отдел</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Departament.FullName)
         </dd>
     </dl>
     
     <form asp-action="Delete">
-        <input type="hidden" asp-for="EmployeeID" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Удалить" class="btn btn-default" /> |
+        <a asp-action="Index">Вернуться назад</a>
     </form>
 </div>

@@ -1,0 +1,49 @@
+﻿@model CompanyASP.Models.DepartamentValuationPlan
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Подробно</h2>
+
+<div>
+    <h4>Плановые показатели эффективности отделов компании</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            <label>Квартал</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Quarter)
+        </dd>
+        <dt>
+            <label>Год</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Year)
+        </dd>
+        <dt>
+            <label>Квартальная эффективность(%)</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PerfomanceQuarter)
+        </dd>
+        <dt>
+            <label>годовая эффективность(%)</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PerfomanceYear)
+        </dd>
+        <dt>
+            <label>Отдел</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Departament.FullName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a> |
+    <a asp-action="Index">Вернуться назад</a>
+</div>

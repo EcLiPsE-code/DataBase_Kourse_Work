@@ -1,0 +1,53 @@
+﻿@model CompanyASP.Models.Indicators.ListDepartamentMetrics
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Создать</h2>
+
+<h4>Перечень показателей оценки отделов компании</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Quarter" class="control-label">Квартал</label>
+                <input asp-for="Quarter" class="form-control" />
+                <span asp-validation-for="Quarter" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Year" class="control-label">Год</label>
+                <input asp-for="Year" class="form-control" />
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MarkYear" class="control-label">Годовая оценка (от 1 до 10)</label>
+                <input asp-for="MarkYear" class="form-control" />
+                <span asp-validation-for="MarkYear" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MarkQuarter" class="control-label">Квартальная оценка (от 1 до 10)</label>
+                <input asp-for="MarkQuarter" class="form-control" />
+                <span asp-validation-for="MarkQuarter" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DepartamentId" class="control-label">Отдел компании</label>
+                <select asp-for="DepartamentId" class ="form-control" asp-items="ViewBag.DepartamentId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Создать" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Вернуться назад</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

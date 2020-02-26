@@ -1,0 +1,51 @@
+﻿@model CompanyASP.Models.Indicators.ListEmployeesMetrics
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Удалить</h2>
+
+<h3>Вы действительно хотите удалить этот перечень?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            <label>Квартал</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Quarter)
+        </dd>
+        <dt>
+            <label>Год</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Year)
+        </dd>
+        <dt>
+            <label>Квартальная оценка (от 1 до 10)</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MarkQuarter)
+        </dd>
+        <dt>
+            <label>Годовая оценка (от 1 до 10)</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MarkYear)
+        </dd>
+        <dt>
+            <label>Сотрудник</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Employee.FullName)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Удалить" class="btn btn-default" /> |
+        <a asp-action="Index">Вернуться назад</a>
+    </form>
+</div>

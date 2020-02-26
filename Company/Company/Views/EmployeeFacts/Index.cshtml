@@ -1,41 +1,134 @@
-﻿@model IEnumerable<CompanyASP.Models.EmployeeFact>
+﻿@using CompanyASP.ViewModel.SortedEmployeeFact
+@model IndexFactEmployeeViewModel
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<html>
-<head>
-    <title>Фактические показатели сотрудников</title>
-</head>
-<body>
-    <h3>Фактические показатели сотрудников</h3>
-    <table>
+
+<style>
+    @@font-face {
+        font-family: 'FontAwesome';
+        src: url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2') format('woff2'), url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/fonts/fontawesome-webfont.woff') format('woff'), url('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/fonts/fontawesome-webfont.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal
+    }
+
+    .glyphicon {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale
+    }
+
+    .glyphicon-chevron-right:before {
+        content: "\f054";
+    }
+
+    .glyphicon-chevron-left:before {
+        content: "\f053";
+    }
+</style>
+
+<h2>Фактические показатели сотрудников</h2>
+
+
+<form method="get">
+    <div class="form-inline">
+        <label>Сотрудник</label>
+        @Html.DropDownList("employeeFacts", Model.FilterFactEmployeeViewModel.Employees as SelectList,
+                                                            htmlAttributes: new { @class = "form-control" });
+        <label>Квартал</label>
+        <input name="quarter" value="@Model.FilterFactEmployeeViewModel.SelectQuarter" class="form-control" />
+
+        <label>Год</label>
+        <input name="year" value="@Model.FilterFactEmployeeViewModel.SelectYear" class="form-control" />
+
+        <input type="submit" value="Фильтр" class="btn btn-outline-dark" />
+    </div>
+</form>
+
+<p>
+    <a asp-action="Create">Создать новый показатель</a>
+</p>
+<table class="table">
+    <thead>
         <tr>
-            <td>Код фактического показателя</td>
-            <td>ФИО сотрудника</td>
-            <td>Квартальный показатель</td>
-            <td>Годовой показатель</td>
-            <td>Годовые затраты</td>
-            <td>Квартальные затраты</td>
+            <th align="center">
+                <label>Код показателя</label>
+            </th>
+            <th align="center">
+                <label>Квартал</label>
+            </th>
+            <th align="center">
+                <label>Год</label>
+            </th>
+            <th align="center">
+                <label>Квартальная эффективность</label>
+            </th>
+            <th align="center">
+                <label>Годовая эффективность</label>
+            </th>
+            <th align="center">
+                <label>Сотрудник</label>
+            </th>
+            <th></th>
         </tr>
-        @foreach(var employeeFact in Model)
+    </thead>
+    <tbody>
+        @foreach (var item in Model.EmployeeFacts)
         {
             <tr>
-                <td>@employeeFact.EmployeeFactID</td>
-                <td>@employeeFact.FullName</td>
-                <td>@employeeFact.Quarter</td>
-                <td>@employeeFact.Year</td>
-                <td>@employeeFact.ProfitYear</td>
-                <td>@employeeFact.ProfitQuarter</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@employeeFact.EmployeeFactID">Редактировать</a> |
-                    <a asp-action="Details" asp-route-id="@employeeFact.EmployeeFactID">Детали</a> |
-                    <a asp-action="Delete" asp-route-id="@employeeFact.EmployeeFactID">Удалить</a>
+                <td align="center">
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td align="center">
+                    @Html.DisplayFor(modelItem => item.Quarter)
+                </td>
+                <td align="center">
+                    @Html.DisplayFor(modelItem => item.Year)
+                </td>
+                <td align="center">
+                    @Html.DisplayFor(modelItem => item.PerfomanceQuarter)
+                </td>
+                <td align="center">
+                    @Html.DisplayFor(modelItem => item.PerfomanceYear)
+                </td>
+                <td align="center">
+                    @Html.DisplayFor(modelItem => item.Employee.FullName)
+                </td>
+                <td width="300">
+                    <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Подробно</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
                 </td>
             </tr>
         }
-    </table>
-</body>
-</html>
-
+    </tbody>
+</table>
+@if (Model.PageViewModel.HasPreviousPage)
+{
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+       asp-route-employeeFacts ="@Model.FilterFactEmployeeViewModel.SelectEmployeeFact"
+       asp-route-quarter="@Model.FilterFactEmployeeViewModel.SelectQuarter"
+       asp-route-year="@Model.FilterFactEmployeeViewModel.SelectYear"
+       class="btn btn-outline-dark">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        Назад
+    </a>
+}
+@if (Model.PageViewModel.HasNextPage)
+{
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+       asp-route-employeeFacts ="@Model.FilterFactEmployeeViewModel.SelectEmployeeFact"
+       asp-route-quarter="@Model.FilterFactEmployeeViewModel.SelectQuarter"
+       asp-route-year="@Model.FilterFactEmployeeViewModel.SelectYear"
+       class="btn btn-outline-dark">
+        Вперед
+        <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+}

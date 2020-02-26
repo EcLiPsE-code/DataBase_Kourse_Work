@@ -5,45 +5,45 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h2>Подробно</h2>
 
 <div>
-    <h4>Employee</h4>
+    <h4>Сотрудник компании</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.FullName)
+            <label>ФИО</label>
         </dt>
         <dd>
             @Html.DisplayFor(model => model.FullName)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Salary)
+            <label>Зарплата</label>
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Salary)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Profit)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Profit)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Age)
+            <label>Возраст</label>
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Age)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Unit)
+            <label>Рейтинг</label>
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Unit.UnitID)
+            @Html.DisplayFor(model => model.Raiting)
+        </dd>
+        <dt>
+            <label>Отдел</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Departament.FullName)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.EmployeeID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a> |
+    <a asp-action="Index">Вернуться назад</a>
 </div>

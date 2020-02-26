@@ -1,5 +1,8 @@
-﻿using System;
+﻿using CompanyASP.Models.Indicators;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,27 +10,14 @@ namespace CompanyASP.Models
 {
     public class EmployeeFact
     {
-        /// <summary>
-        /// поля класса
-        /// </summary>
-        public int EmployeeFactID { get; set; }
-        public string FullName { get; set; }
+        public int Id { get; set; }
         public int Quarter { get; set; }
         public int Year { get; set; }
-        public decimal ProfitYear { get; set; }
-        public decimal ProfitQuarter { get; set; }
+        public double PerfomanceQuarter { get; set; } //эффективность в процентах от 1 до 100
+        public double PerfomanceYear { get; set; } 
 
-        /// <summary>
-        /// внешний ключ к таблице Employee
-        /// </summary>
-        public int EmployeeID { get; set; }
-        public Employee Employee { get; set; }
+        public int EmployeeId { get; set; }
+        public Employee Employee { get; set; } //навигационное свойство
 
-
-        public ICollection<EmployeePlan> EmployeePlans { get; set; }
-        public EmployeeFact()
-        {
-            EmployeePlans = new List<EmployeePlan>();
-        }
     }
 }

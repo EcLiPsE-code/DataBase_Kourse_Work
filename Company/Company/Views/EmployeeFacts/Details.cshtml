@@ -5,51 +5,45 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h2>Подробно</h2>
 
 <div>
-    <h4>EmployeeFact</h4>
+    <h4>Фактические показатели эффективности сотрудников компании</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.FullName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.FullName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Quarter)
+            <label>Квартал</label>
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Quarter)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Year)
+            <label>Год</label>
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Year)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.ProfitYear)
+            <label>Квартальная эффективность(%)</label>
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.ProfitYear)
+            @Html.DisplayFor(model => model.PerfomanceQuarter)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.ProfitQuarter)
+            <label>Годовая эффективность(%)</label>
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.ProfitQuarter)
+            @Html.DisplayFor(model => model.PerfomanceYear)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Employee)
+            <label>Сотрудник</label>
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Employee.EmployeeID)
+            @Html.DisplayFor(model => model.Employee.FullName)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.EmployeeFactID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a> |
+    <a asp-action="Index">Вернуться назад</a>
 </div>

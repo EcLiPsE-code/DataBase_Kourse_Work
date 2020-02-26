@@ -1,0 +1,55 @@
+﻿@model CompanyASP.Models.DepartamentValuationFact
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Редактировать</h2>
+
+<h4>Фактические показатели отделов компнании</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Quarter" class="control-label">Квартал (1 или 2)</label>
+                <input asp-for="Quarter" class="form-control" />
+                <span asp-validation-for="Quarter" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Year" class="control-label">Год</label>
+                <input asp-for="Year" class="form-control" />
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PerfomanceYear" class="control-label">Годовой показатель(%)</label>
+                <input asp-for="PerfomanceYear" class="form-control" />
+                <span asp-validation-for="PerfomanceYear" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PerfomanceQuarter" class="control-label">Квартальный показатель(%)</label>
+                <input asp-for="PerfomanceQuarter" class="form-control" />
+                <span asp-validation-for="PerfomanceQuarter" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DepartamentId" class="control-label">Отдел</label>
+                <select asp-for="DepartamentId" class="form-control" asp-items="ViewBag.DepartamentId"></select>
+                <span asp-validation-for="DepartamentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Вернуться назад</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

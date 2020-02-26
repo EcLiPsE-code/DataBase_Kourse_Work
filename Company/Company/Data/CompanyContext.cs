@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CompanyASP.Models;
+using CompanyASP.Models.Indicators;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.SqlServer;
 
 
 namespace CompanyASP.Data
@@ -19,8 +19,11 @@ namespace CompanyASP.Data
         public DbSet<EmployeeFact> EmployeeFacts { get; set; }
         public DbSet<EmployeePlan> EmployeePlans { get; set; }
         public DbSet<ProgressEmployee> ProgressEmployees { get; set; }
-        public DbSet<Unit> Units { get; set; }
-        public DbSet<UnitValuationFact> UnitValuationFacts { get; set; }
-        public DbSet<UnitValuationPlan> UnitValuationPlans { get; set; }
+        public DbSet<Departament> Departaments { get; set; }
+        public DbSet<DepartamentValuationFact> DepartamentValuationFacts { get; set; }
+        public DbSet<DepartamentValuationPlan> DepartamentValuationPlans { get; set; }
+        public DbSet<ListEmployeesMetrics> ListEmployeesMetrics { get; set; }
+        public DbSet<ListDepartamentMetrics> ListDepartamentMetrics { get; set; }
+
     }
 }

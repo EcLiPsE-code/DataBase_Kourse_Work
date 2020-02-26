@@ -5,54 +5,47 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Delete</h2>
+<h2>Удалить</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Вы действительно хотите удалить эти показатели?</h3>
 <div>
-    <h4>EmployeePlan</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.FullName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.FullName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Quarter)
+            <label>Квартал</label>
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Quarter)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Year)
+            <label>Год</label>
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Year)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.ProfitQuarter)
+            <label>Квартальная эффективность(%)</label>
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.ProfitQuarter)
+            @Html.DisplayFor(model => model.PerfomanceQuarter)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.ProfitYear)
+            <label>Годовая эффективность(%)</label>
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.ProfitYear)
+            @Html.DisplayFor(model => model.PerfomanceYear)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.EmployeeFact)
+            <label>Сотрудник</label>
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.EmployeeFact.EmployeeFactID)
+            @Html.DisplayFor(model => model.Employee.FullName)
         </dd>
     </dl>
     
     <form asp-action="Delete">
-        <input type="hidden" asp-for="EmployeePlanID" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Удалить" class="btn btn-default" /> |
+        <a asp-action="Index">Вернуться назад</a>
     </form>
 </div>

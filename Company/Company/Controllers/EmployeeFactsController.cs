@@ -7,12 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CompanyASP.Data;
 using CompanyASP.Models;
+using CompanyASP.ViewModel;
+using CompanyASP.ViewModel.SortedEmployeeFact;
 
 namespace CompanyASP.Controllers
 {
     public class EmployeeFactsController : Controller
     {
         private readonly CompanyContext _context;
+        private int pageSize = 10;
 
         public EmployeeFactsController(CompanyContext context)
         {
@@ -20,10 +23,39 @@ namespace CompanyASP.Controllers
         }
 
         // GET: EmployeeFacts
-        public async Task<IActionResult> Index()
+
+        public async Task<IActionResult> Index(int? quarter, int? year, int? employeeFacts, int page = 1)
         {
-            var companyContext = _context.EmployeeFacts.Include(e => e.Employee);
-            return View(await companyContext.ToListAsync());
+            IQueryable<EmployeeFact> companyContext = _context.EmployeeFacts
+                                                      .Include(d => d.Employee);
+
+            //фильтрация
+            if (quarter != null && quarter != 0)
+            {
+                companyContext = companyContext.Where(d => d.Quarter == quarter);
+            }
+            if (year != null && year != 0)
+            {
+                companyContext = companyContext.Where(d => d.Year == year);
+            }
+            if (employeeFacts != null && employeeFacts != 0)
+            {
+                companyContext = companyContext.Where(d => d.Employee.Id == employeeFacts);
+            }
+            
+            var count = await companyContext.CountAsync();
+            var employeesFacts = await companyContext.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            var employees = await companyContext.Select(ef => ef.Employee).ToListAsync();
+            //формирование представления
+            IndexFactEmployeeViewModel viewEmployeeFact = new IndexFactEmployeeViewModel
+            {
+                EmployeeFacts = employeesFacts,
+                PageViewModel = new PageViewModel(count, page, pageSize),
+                FilterFactEmployeeViewModel = new FilterFactEmployeeViewModel(employees,
+                                                                            quarter, year, employeeFacts)
+            };
+            return View(viewEmployeeFact);
         }
 
         // GET: EmployeeFacts/Details/5
@@ -36,7 +68,7 @@ namespace CompanyASP.Controllers
 
             var employeeFact = await _context.EmployeeFacts
                 .Include(e => e.Employee)
-                .FirstOrDefaultAsync(m => m.EmployeeFactID == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (employeeFact == null)
             {
                 return NotFound();
@@ -48,7 +80,7 @@ namespace CompanyASP.Controllers
         // GET: EmployeeFacts/Create
         public IActionResult Create()
         {
-            ViewData["EmployeeID"] = new SelectList(_context.Employees, "EmployeeID", "EmployeeID");
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FullName");
             return View();
         }
 
@@ -57,7 +89,7 @@ namespace CompanyASP.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmployeeFactID,FullName,Quarter,Year,ProfitYear,ProfitQuarter,EmployeeID")] EmployeeFact employeeFact)
+        public async Task<IActionResult> Create([Bind("Id,Quarter,Year,PerfomanceQuarter,PerfomanceYear,EmployeeId")] EmployeeFact employeeFact)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +97,7 @@ namespace CompanyASP.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeID"] = new SelectList(_context.Employees, "EmployeeID", "EmployeeID", employeeFact.EmployeeID);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FullName", employeeFact.EmployeeId);
             return View(employeeFact);
         }
 
@@ -82,7 +114,7 @@ namespace CompanyASP.Controllers
             {
                 return NotFound();
             }
-            ViewData["EmployeeID"] = new SelectList(_context.Employees, "EmployeeID", "EmployeeID", employeeFact.EmployeeID);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FullName", employeeFact.EmployeeId);
             return View(employeeFact);
         }
 
@@ -91,9 +123,9 @@ namespace CompanyASP.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EmployeeFactID,FullName,Quarter,Year,ProfitYear,ProfitQuarter,EmployeeID")] EmployeeFact employeeFact)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Quarter,Year,PerfomanceQuarter,PerfomanceYear,EmployeeId")] EmployeeFact employeeFact)
         {
-            if (id != employeeFact.EmployeeFactID)
+            if (id != employeeFact.Id)
             {
                 return NotFound();
             }
@@ -107,7 +139,7 @@ namespace CompanyASP.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EmployeeFactExists(employeeFact.EmployeeFactID))
+                    if (!EmployeeFactExists(employeeFact.Id))
                     {
                         return NotFound();
                     }
@@ -118,7 +150,7 @@ namespace CompanyASP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeID"] = new SelectList(_context.Employees, "EmployeeID", "EmployeeID", employeeFact.EmployeeID);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FullName", employeeFact.EmployeeId);
             return View(employeeFact);
         }
 
@@ -132,7 +164,7 @@ namespace CompanyASP.Controllers
 
             var employeeFact = await _context.EmployeeFacts
                 .Include(e => e.Employee)
-                .FirstOrDefaultAsync(m => m.EmployeeFactID == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (employeeFact == null)
             {
                 return NotFound();
@@ -154,7 +186,7 @@ namespace CompanyASP.Controllers
 
         private bool EmployeeFactExists(int id)
         {
-            return _context.EmployeeFacts.Any(e => e.EmployeeFactID == id);
+            return _context.EmployeeFacts.Any(e => e.Id == id);
         }
     }
 }

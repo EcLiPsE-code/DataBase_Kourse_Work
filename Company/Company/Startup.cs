@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using CompanyASP.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +25,7 @@ namespace Company
             services.AddDbContext<CompanyContext>(options => options.UseSqlServer(connection));
             services.AddDistributedMemoryCache();
             services.AddSession();
+            services.AddResponseCaching();
             services.AddMvc();
         }
 
@@ -43,10 +39,14 @@ namespace Company
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseSession();
+            app.UseResponseCaching();
             app.UseCookiePolicy();
             app.UseDbInitializer();
 

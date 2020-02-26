@@ -52,6 +52,14 @@
               "target": "Package",
               "version": "[2.1.2, )"
             },
+            "Microsoft.AspNetCore.ResponseCaching": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[2.1.1, )"
+            },
             "Microsoft.NETCore.App": {
               "suppressParent": "All",
               "target": "Package",
@@ -61,6 +69,14 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[2.1.10, )"
+            },
+            "bootstrap": {
+              "target": "Package",
+              "version": "[4.4.1, )"
+            },
+            "bootstrap.sass": {
+              "target": "Package",
+              "version": "[4.4.1, )"
             }
           },
           "imports": [
@@ -73,7 +89,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

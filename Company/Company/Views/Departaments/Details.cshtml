@@ -1,0 +1,37 @@
+﻿@model CompanyASP.Models.Departament
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Подробнее</h2>
+
+<div>
+    <h4>Отдел компании</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            <label>Код отдела</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            <label>Наименование отдела</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+        <dt>
+            <label>Количество сотрдуников в отделе</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CountEmployee)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a> |
+    <a asp-action="Index">Вернуться назад</a>
+</div>

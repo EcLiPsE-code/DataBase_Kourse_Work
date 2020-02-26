@@ -7,12 +7,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CompanyASP.Data;
 using CompanyASP.Models;
+using CompanyASP.ViewModel;
 
 namespace CompanyASP.Controllers
 {
     public class ProgressEmployeesController : Controller
     {
         private readonly CompanyContext _context;
+        private int pageSize = 10;
 
         public ProgressEmployeesController(CompanyContext context)
         {
@@ -20,10 +22,23 @@ namespace CompanyASP.Controllers
         }
 
         // GET: ProgressEmployees
-        public async Task<IActionResult> Index()
+
+        public IActionResult Index(int page = 1)
         {
-            var companyContext = _context.ProgressEmployees.Include(p => p.Employee);
-            return View(await companyContext.ToListAsync());
+            IQueryable<ProgressEmployee> companyContext = _context.ProgressEmployees
+                                                          .Include(d => d.Employee);
+
+            //разбиение на страницы
+            var count = companyContext.Count();
+            companyContext = companyContext.Skip((page - 1) * pageSize).Take(pageSize);
+
+            //формирование представления
+            ProgressEmployeeViewModel progress = new ProgressEmployeeViewModel
+            {
+                ProgressEmployees = companyContext,
+                PageViewModel = new PageViewModel(count, page, pageSize),
+            };
+            return View(progress);
         }
 
         // GET: ProgressEmployees/Details/5
@@ -36,7 +51,7 @@ namespace CompanyASP.Controllers
 
             var progressEmployee = await _context.ProgressEmployees
                 .Include(p => p.Employee)
-                .FirstOrDefaultAsync(m => m.ProgressEmployeeID == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (progressEmployee == null)
             {
                 return NotFound();
@@ -48,7 +63,7 @@ namespace CompanyASP.Controllers
         // GET: ProgressEmployees/Create
         public IActionResult Create()
         {
-            ViewData["EmployeeID"] = new SelectList(_context.Employees, "EmployeeID", "EmployeeID");
+            ViewData["EmployeeID"] = new SelectList(_context.Employees, "Id", "FullName");
             return View();
         }
 
@@ -57,7 +72,7 @@ namespace CompanyASP.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProgressEmployeeID,FullName,Progress,EmployeeID")] ProgressEmployee progressEmployee)
+        public async Task<IActionResult> Create([Bind("Id,Progress,EmployeeID")] ProgressEmployee progressEmployee)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +80,7 @@ namespace CompanyASP.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeID"] = new SelectList(_context.Employees, "EmployeeID", "EmployeeID", progressEmployee.EmployeeID);
+            ViewData["EmployeeID"] = new SelectList(_context.Employees, "Id", "FullName", progressEmployee.EmployeeID);
             return View(progressEmployee);
         }
 
@@ -82,7 +97,7 @@ namespace CompanyASP.Controllers
             {
                 return NotFound();
             }
-            ViewData["EmployeeID"] = new SelectList(_context.Employees, "EmployeeID", "EmployeeID", progressEmployee.EmployeeID);
+            ViewData["EmployeeID"] = new SelectList(_context.Employees, "Id", "FullName", progressEmployee.EmployeeID);
             return View(progressEmployee);
         }
 
@@ -91,9 +106,9 @@ namespace CompanyASP.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProgressEmployeeID,FullName,Progress,EmployeeID")] ProgressEmployee progressEmployee)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Progress,EmployeeID")] ProgressEmployee progressEmployee)
         {
-            if (id != progressEmployee.ProgressEmployeeID)
+            if (id != progressEmployee.Id)
             {
                 return NotFound();
             }
@@ -107,7 +122,7 @@ namespace CompanyASP.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProgressEmployeeExists(progressEmployee.ProgressEmployeeID))
+                    if (!ProgressEmployeeExists(progressEmployee.Id))
                     {
                         return NotFound();
                     }
@@ -118,7 +133,7 @@ namespace CompanyASP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeID"] = new SelectList(_context.Employees, "EmployeeID", "EmployeeID", progressEmployee.EmployeeID);
+            ViewData["EmployeeID"] = new SelectList(_context.Employees, "Id", "FullName", progressEmployee.EmployeeID);
             return View(progressEmployee);
         }
 
@@ -132,7 +147,7 @@ namespace CompanyASP.Controllers
 
             var progressEmployee = await _context.ProgressEmployees
                 .Include(p => p.Employee)
-                .FirstOrDefaultAsync(m => m.ProgressEmployeeID == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (progressEmployee == null)
             {
                 return NotFound();
@@ -154,7 +169,7 @@ namespace CompanyASP.Controllers
 
         private bool ProgressEmployeeExists(int id)
         {
-            return _context.ProgressEmployees.Any(e => e.ProgressEmployeeID == id);
+            return _context.ProgressEmployees.Any(e => e.Id == id);
         }
     }
 }

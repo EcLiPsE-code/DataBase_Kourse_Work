@@ -1,0 +1,39 @@
+﻿@model CompanyASP.Models.Departament
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Удалить</h2>
+
+<h3>Вы уверены что хотите удалить этот отдел?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            <label>Код отдела</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            <label>Наименование отдела</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+        <dt>
+            <label>Количество сотрудников в отделе</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CountEmployee)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Удалить" class="btn btn-default" /> |
+        <a asp-action="Index">Вернуться назад</a>
+    </form>
+</div>

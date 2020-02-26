@@ -1,0 +1,48 @@
+﻿@model CompanyASP.Models.Indicators.ListDepartamentMetrics
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Подробно</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            <label>Квартал</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Quarter)
+        </dd>
+        <dt>
+            <label>Год</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Year)
+        </dd>
+        <dt>
+            <label>Годовая оценка (от 1 до 10)</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MarkYear)
+        </dd>
+        <dt>
+            <label>Квартальная оценка (от 1 до 10)</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MarkQuarter)
+        </dd>
+        <dt>
+            <label>Отдел компании</label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Departament.FullName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a> |
+    <a asp-action="Index">Вернуться назад</a>
+</div>

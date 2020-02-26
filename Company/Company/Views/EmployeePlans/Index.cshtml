@@ -1,46 +1,112 @@
-﻿@model IEnumerable<CompanyASP.Models.EmployeePlan>
+﻿@using CompanyASP.ViewModel
+@model EmployeePlanViewModel
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<html>
-<head>
-    <title>Фактические показатели сотрудников</title>
-</head>
-<body>
-    <h3>Фактические показатели сотрудников</h3>
-    <table>
+
+<style>
+    @@font-face {
+        font-family: 'FontAwesome';
+        src: url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2') format('woff2'), url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/fonts/fontawesome-webfont.woff') format('woff'), url('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/fonts/fontawesome-webfont.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal
+    }
+
+    .glyphicon {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale
+    }
+
+    .glyphicon-chevron-right:before {
+        content: "\f054";
+    }
+
+    .glyphicon-chevron-left:before {
+        content: "\f053";
+    }
+</style>
+
+<h2>Плановые показатели сотрудников компании</h2>
+
+<p>
+    <a asp-action="Create">Создать новый показатель</a>
+</p>
+<table class="table">
+    <thead>
         <tr>
-            <td>Код планового показателя</td>
-            <td>ФИО сотрудника</td>
-            <td>Квартальный показатель</td>
-            <td>Годовой показатель</td>
-            <td>Годовые затраты</td>
-            <td>Квартальные затраты</td>
-            <td>Фактические квартальные показатели</td>
-            <td>Фактические годовые показатели</td>
+            <th align="center">
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th align="center">
+                @Html.DisplayNameFor(model => model.Quarter)
+            </th>
+            <th align="center">
+                @Html.DisplayNameFor(model => model.Year)
+            </th>
+            <th align="center">
+                @Html.DisplayNameFor(model => model.PerfomanceQuarter)
+            </th>
+            <th align="center">
+                @Html.DisplayNameFor(model => model.PerfomanceYear)
+            </th>
+            <th align="center">
+                @Html.DisplayNameFor(model => model.EmployeeId)
+            </th>
+            <th></th>
         </tr>
-        @foreach (var employeePlan in Model)
+    </thead>
+    <tbody>
+        @foreach (var item in Model.EmployeePlans)
         {
-            <tr>
-                <td>@employeePlan.EmployeeFactID</td>
-                <td>@employeePlan.FullName</td>
-                <td>@employeePlan.Quarter</td>
-                <td>@employeePlan.Year</td>
-                <td>@employeePlan.ProfitYear</td>
-                <td>@employeePlan.ProfitQuarter</td>
-                <td>@employeePlan.EmployeeFact.ProfitQuarter</td>
-                <td>@employeePlan.EmployeeFact.ProfitYear</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@employeePlan.EmployeePlanID">Редактировать</a> |
-                    <a asp-action="Details" asp-route-id="@employeePlan.EmployeePlanID">Детали</a> |
-                    <a asp-action="Delete" asp-route-id="@employeePlan.EmployeePlanID">Удалить</a>
-                </td>
-            </tr>
+        <tr>
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.Quarter)
+            </td>
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.PerfomanceQuarter)
+            </td>
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.PerfomanceYear)
+            </td>
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.Employee.FullName)
+            </td>
+            <td width="300">
+                <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Подробно</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+            </td>
+        </tr>
         }
-    </table>
-</body>
-</html>
-
-
+    </tbody>
+</table>
+@if (Model.PageViewModel.HasPreviousPage)
+{
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+       class="btn btn-outline-dark">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        Назад
+    </a>
+}
+@if (Model.PageViewModel.HasNextPage)
+{
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+       class="btn btn-outline-dark">
+        Вперед
+        <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+}
